@@ -4,16 +4,15 @@
 
 The current format API only supports formatting numbers, strings and pointers.
 
-It supports formatting numbers in Binary, Octal, Decminal and Hexadecimal.in Binary, Octal, Decminal and Hexadecimal
-
+It supports formatting numbers in Binary, Octal, Decimal and Hexadecimal.
 
 # Example usage
-```
+```cpp
 #include <format/format.h>
 
 int main()
 {
-    formatter f;
+    Formatter f;
     auto [str, len] = f.format("Hello, ", "World");
     // str - pointer to the formatted null terminated string.
     // len - length of the formatted string. (doesn't account for null terminator)
@@ -25,8 +24,8 @@ The API also supports formatting user-defined types.
 Types which implement the member function `T::format(Formatter&) const` are eligible.
 
 
-# Eaxmple
-```c
+# Example
+```cpp
 #include <format/format.h>
 
 struct User {
