@@ -87,6 +87,7 @@ extern "C" [[noreturn]] void _start(boot_info& info)
         hang(0x2222);
     }
 
+
     _printer = term->term_write;
     print("FireflyOS v1");
 

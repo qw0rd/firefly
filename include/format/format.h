@@ -23,8 +23,22 @@ enum class NumFormat {
 
 class Formatter;
 
+class TypeFormatter {
+    // reference  to the current formatter.
+    Formatter& fmt;
+
+public:
+    TypeFormatter(Formatter& _f) : fmt{_f} {}
+
+    template <typename T, typename... Args>
+    void format(T arg, Args... args) 
+    {
+        fmt._fmt(arg, args...);
+    }
+};
+
 template <typename T>
-concept Formattable = requires(T obj, Formatter& fmt) {
+concept Formattable = requires(T obj, TypeFormatter& fmt) {
         obj.format(fmt);
 }; 
 
@@ -32,6 +46,8 @@ concept Formattable = requires(T obj, Formatter& fmt) {
    Currently, The `Formatter` API works but should seriously consider rewriting it after setting up the inital OS stuff.
     TODO: MAKE THE API NOT SUCK
  */
+
+
 
 class Formatter {
     // the maximum size of the buffer.
@@ -65,7 +81,8 @@ class Formatter {
 
     void _fmt(const Formattable auto& val)
     {
-        val.format(*this);
+        TypeFormatter t{*this};
+        val.format(t);
     }
 
     template <typename T> requires std::is_pointer_v<T>
@@ -76,7 +93,6 @@ class Formatter {
         _fmt((usize)a); 
         num_f = cpy;
     }
-
 
     void _fmt(const std::integral auto num)
     {
@@ -139,5 +155,7 @@ public:
         _fmt(a...);
 
     }
+
+    friend TypeFormatter;
 };
 

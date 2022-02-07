@@ -21,7 +21,7 @@ int main()
 
 The API also supports formatting user-defined types.
 
-Types which implement the member function `T::format(Formatter&) const` are eligible.
+Types which implement the member function `T::format(TypeFormatter&) const` are eligible.
 
 
 # Example
@@ -32,9 +32,9 @@ struct User {
     int pid;
     const char* name;
     
-    void format(Formatter& fmt)
+    void format(TypeFormatter& fmt)
     {
-        fmt.tfmt("PID: ", pid, "\t NAME: ", name);
+        fmt.format("PID: ", pid, "\t NAME: ", name);
     }
 };
 
@@ -45,7 +45,7 @@ int main()
         .name = "Admin"
     };
 
-    formatter f;
+    Formatter f;
     auto [str, len] = f.format("User: ", u, "\n");
 }
 
